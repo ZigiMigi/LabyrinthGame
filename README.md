@@ -13,7 +13,7 @@ This is my first ever big project that I am working on alone. Project started in
 - Maze 100x100  
   ![image](https://user-images.githubusercontent.com/82703447/134900813-08222348-e5bc-4d1c-aee0-93c2bfc9489d.png)
   
-- My project also includes a MazeSolver (if a player gives up on a maze or just wants to see how a solution looks he may use a function that will show draw him a solution). The function uses the BFS method to find the end.
+- My project also includes a MazeSolver (if a player gives up on a maze or just wants to see how a solution looks, he may use a function that will draw him the solution). The function uses the BFS method to find the end.
   ![image](https://user-images.githubusercontent.com/82703447/134901514-3293a0ad-7a12-40e7-8372-9aaefdf170fd.png)
   
 - Demonstration of the Maze Solver:
