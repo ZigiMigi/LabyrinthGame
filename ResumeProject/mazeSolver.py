@@ -1,5 +1,5 @@
-import mazeCreator
-tab = mazeCreator.mazeInit(10, 10)
+import primsAlgorithm
+tab = primsAlgorithm.primInit(10, 10)
 
 
 def solveMaze(maze, mazeH, mazeW):

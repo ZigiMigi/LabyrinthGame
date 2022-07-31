@@ -1,5 +1,5 @@
 def writeToFile(maze):
-    file = open(r"C:\Users\zigak\ResumeProject\MAZE.txt", "w")
+    file = open(r"C:\Users\Ziga\PycharmProjects\Diplomska\LabyrinthGame\ResumeProject\MAZE.txt", "w")
     for x in maze:
         line = ""
         for y in x:
@@ -14,7 +14,7 @@ def writeSolution(solution, mazeHeight, mazeWidth):
     for x in solution:
         i, j = x
         matrix[i][j] = 1
-    file = open(r"C:\Users\zigak\ResumeProject\SOLUTION.txt", "w")
+    file = open(r"C:\Users\Ziga\PycharmProjects\Diplomska\LabyrinthGame\ResumeProject\SOLUTION.txt", "w")
     for x in matrix:
         line = ""
         for y in x:

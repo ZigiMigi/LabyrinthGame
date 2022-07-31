@@ -1,13 +1,14 @@
 import sys
 import pygame
-import mazeCreator
+import primsAlgorithm
 import mazeSolver
 import saveMaze
+import kruskalsAlgorithm
 
 
-WIDTH = 800
-HEIGHT = 800
-MAZE_WIDTH = MAZE_HEIGHT = 40
+WIDTH = 600
+HEIGHT = 600
+MAZE_WIDTH = MAZE_HEIGHT = 25
 WALL_THICKNESS = WIDTH // MAZE_WIDTH
 
 
@@ -16,10 +17,10 @@ clock = pygame.time.Clock()
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Labrynth solver")
-game = mazeCreator.mazeInit(MAZE_WIDTH, MAZE_HEIGHT)
-solution = mazeSolver.solveMaze(game, MAZE_HEIGHT, MAZE_WIDTH)
+game = kruskalsAlgorithm.kuskalInit(MAZE_WIDTH, MAZE_HEIGHT)
+#solution = mazeSolver.solveMaze(game, MAZE_HEIGHT, MAZE_WIDTH)
 saveMaze.writeToFile(game)
-saveMaze.writeSolution(solution, MAZE_HEIGHT, MAZE_WIDTH)
+#saveMaze.writeSolution(solution, MAZE_HEIGHT, MAZE_WIDTH)
 
 
 y = 0
@@ -33,14 +34,15 @@ for row in game:
         x += WALL_THICKNESS
     y += WALL_THICKNESS
 pygame.display.update()
-solutionDrawn = False
-solution.reverse()
+solutionDrawn = True
+#solution.reverse()
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
+    """
     if not solutionDrawn:
         solutionDrawn = True
         for coordinates in solution:
@@ -49,5 +51,5 @@ while True:
                 x * WALL_THICKNESS, y * WALL_THICKNESS, WALL_THICKNESS, WALL_THICKNESS))
             pygame.display.update()
             pygame.time.wait(25)
-
+    """
 
