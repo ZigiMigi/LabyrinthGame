@@ -3,11 +3,12 @@ import saveMaze
 import pygame
 import sys
 import mazeSolver
+import binaryTreeAlgorithm
 
 
 WIDTH = 800
 HEIGHT = 800
-MAZE_WIDTH = MAZE_HEIGHT = 40
+MAZE_WIDTH = MAZE_HEIGHT = 25
 WALL_THICKNESS = WIDTH // MAZE_WIDTH
 
 
@@ -16,7 +17,7 @@ clock = pygame.time.Clock()
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Labrynth solver")
-game = saveMaze.readMaze(r"C:\Users\zigak\ResumeProject\MAZE.txt")
+game = binaryTreeAlgorithm.binaryTreeInit(MAZE_WIDTH, MAZE_HEIGHT)
 matrix = mazeSolver.createMatrix(MAZE_HEIGHT, MAZE_WIDTH)
 start, end = mazeSolver.findStartEnd(game, MAZE_HEIGHT, MAZE_WIDTH)
 matrix[start[0]][start[1]] = 1

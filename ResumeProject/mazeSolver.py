@@ -1,8 +1,10 @@
+from collections import deque
+
 import primsAlgorithm
 tab = primsAlgorithm.primInit(10, 10)
 
 
-def solveMaze(maze, mazeH, mazeW):
+def solveMazeDFS(maze, mazeH, mazeW):
     matrix = createMatrix(mazeH, mazeW)
     start, end = findStartEnd(maze, mazeH, mazeW)
     matrix[start[0] + 1][start[1]] = 1
@@ -49,6 +51,49 @@ def findPath(k, maze, matrix):
                     matrix[x][y + 1] = k + 1
 
 
+def solveMazeBFS(maze, mazeH, mazeW):
+    matrix = createMatrix(mazeH, mazeW)
+    start, end = findStartEnd(maze, mazeH, mazeW)
+    matrix[start[0] + 1][start[1]] = 1
+
+    queue = deque([(start[0] + 1, start[1])])  # Enqueue the starting position
+
+    while queue:
+        x, y = queue.popleft()
+
+        # Check if we have reached the destination
+        if (x, y) == end:
+            break
+
+        findPathBFS(x, y, maze, matrix, queue)
+
+    # Reconstruct the path
+    i, j = end
+    k = matrix[i][j]
+    if k == 0:
+        return []  # No path found
+
+    solution = [(end[0], end[1])]
+
+    while k > 1:
+        for dx, dy in [(0, -1), (-1, 0), (0, 1), (1, 0)]:
+            nx, ny = i + dx, j + dy
+            if 0 <= nx < mazeH and 0 <= ny < mazeW and matrix[nx][ny] == k - 1:
+                solution.append((nx, ny))
+                i, j = nx, ny
+                k -= 1
+                break
+
+    solution.append((start[0], start[1]))
+    return solution
+
+def findPathBFS(x, y, maze, matrix, queue):
+    for dx, dy in [(0, -1), (-1, 0), (0, 1), (1, 0)]:
+        nx, ny = x + dx, y + dy
+        if 0 <= nx < len(matrix) and 0 <= ny < len(matrix[0]) and matrix[nx][ny] == 0 and maze[nx][ny] == "P":
+            matrix[nx][ny] = matrix[x][y] + 1
+            queue.append((nx, ny))
+
 def createMatrix(mazeH, mazeW):
     ret = []
     for x in range(0, mazeH):
@@ -57,6 +102,7 @@ def createMatrix(mazeH, mazeW):
             tmp.append(0)
         ret.append(tmp)
     return ret
+
 
 def findStartEnd(maze, mazeH, mazeW):
     for x in range(0, mazeW):

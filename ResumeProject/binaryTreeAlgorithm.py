@@ -6,37 +6,40 @@ import random
 
 
 def binaryTreeInit(mazeHeight, mazeWidth):
-    # init maze with all walls
-    maze = []
-    for i in range(0, mazeHeight):
-        row = []
-        for j in range(0, mazeWidth):
-            row.append('W')
-        maze.append(row)
+    # Initialize the maze with walls
+    maze = [['W' for _ in range(mazeHeight)] for _ in range(mazeWidth)]
+    generation = []
 
-    for i in range(1, mazeHeight - 1, 2):
-        for j in range(1, mazeWidth - 1, 2):
-            if i == mazeWidth - 2 and j == mazeHeight - 2:
-                direction = 0
-            elif j == mazeWidth - 2:
-                direction = -1
-            elif i == mazeHeight - 2:
-                direction = 1
+    # Carve passages
+    for row in range(1, mazeWidth - 2, 2):
+        for col in range(1, mazeHeight - 2, 2):
+            if random.choice([True, False]):
+                for k in range(3):
+                    if k + col < mazeHeight:
+                        maze[row][col + k] = 'P'
+                        generation.append((row, col + k))
             else:
-                direction = random.choice([-1, 1])
-
-            # check where to go
-            if direction == -1:
-                # vertical
                 for k in range(3):
-                    maze[i][j + k] = "P"
-            elif direction == 1:
-                # horizontal
-                for k in range(3):
-                    maze[i + k][j] = "P"
+                    if k + row < mazeWidth:
+                        maze[row + k][col] = 'P'
+                        generation.append((row, col + k))
 
+    for x in range(1, mazeWidth - 1):
+        maze[x][mazeWidth - 2] = 'P'
+        generation.append((x, mazeWidth - 2))
+    for x in range(1, mazeHeight - 1):
+        maze[mazeHeight - 2][x] = 'P'
+        generation.append((mazeHeight - 2, x))
 
-    for x in maze:
-        print(x)
+    for i in range(0, mazeWidth):
+        if maze[1][i] == "P":
+            maze[0][i] = "P"
+            generation.append((0, i))
+            break
+    for i in range(mazeWidth - 1, 0, -1):
+        if maze[mazeHeight - 2][i] == "P":
+            maze[mazeHeight - 1][i] = "P"
+            generation.append((mazeHeight - 1, i))
+            break
 
-binaryTreeInit(10, 10)
+    return maze, generation

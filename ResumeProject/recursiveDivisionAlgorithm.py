@@ -7,70 +7,62 @@ import random
 
 def recursiveDivisionInit(mazeWidth, mazeHeight):
     def divide(x, y, w, h):
-        if w < h:
-            direction = -1
-        elif h < w:
-            direction = 1
+        if w < 5 or h < 5:
+            return
+
+        # Calculate the difference in available space for both directions
+        vertical_space = h - 4
+        horizontal_space = w - 4
+
+        # Choose the direction based on available space
+        if vertical_space > horizontal_space:
+            direction = 'vertical'
+        elif horizontal_space > vertical_space:
+            direction = 'horizontal'
         else:
-            direction = random.choice([1, -1])
+            direction = random.choice(['horizontal', 'vertical'])
 
-        # firstly check if the direction is vertical
-        if direction == 1:
-            # direction is vertical
-            if h < 5:
-                return
-
-            # new wall is always even, while the hole is always odd
+        if direction == 'vertical':
             newWall = y + random.randint(2, h - 3) // 2 * 2
-            newHole = x + random.randint(1, h - 2) // 2 * 2 + 1
+            newHole = x + random.randint(1, w - 2) // 2 * 2 + 1
 
-            # walls
-            for i in range(x, x + w - 1):
-                maze[newWall][i] = "W"
+            if newWall < mazeHeight and x + w - 1 < mazeWidth:
+                for i in range(x, x + w - 1):
+                    maze[newWall][i] = "W"
 
-            # hole
-            maze[newWall][newHole] = "P"
+                maze[newWall][newHole] = "P"
 
-            # prepare for new run
-            newH = newWall - y + 1
-            newW = w
-            pairX = x
-            pairY = newWall
-            pairH = y + h - newWall
-            pairW = w
+                newH = newWall - y + 1
+                newW = w
+                pairX = x
+                pairY = newWall
+                pairH = y + h - newWall
+                pairW = w
 
-        elif direction == -1:
-            # direction is horizontal
-
-            if w < 5:
-                return
-
-            # new wall is always even, while the hole is always odd
-            newWall = x + random.randint(2, h - 3) // 2 * 2
+        elif direction == 'horizontal':
+            newWall = x + random.randint(2, w - 3) // 2 * 2
             newHole = y + random.randint(1, h - 2) // 2 * 2 + 1
 
-            # walls
-            for i in range(y, y + h - 1):
-                maze[i][newWall] = "W"
+            if newWall < mazeWidth and y + h - 1 < mazeHeight:
+                for i in range(y, y + h - 1):
+                    maze[i][newWall] = "W"
 
-            # hole
-            maze[newHole][newWall] = "P"
+                maze[newHole][newWall] = "P"
+                generation.append((newHole, newWall))
 
-            # prepare for new run
-            newH = h
-            newW = newWall - x + 1
-            pairX = newWall
-            pairY = y
-            pairH = h
-            pairW = x + w - newWall
+                newH = h
+                newW = newWall - x + 1
+                pairX = newWall
+                pairY = y
+                pairH = h
+                pairW = x + w - newWall
 
-        # do next runs
         divide(x, y, newW, newH)
         divide(pairX, pairY, pairW, pairH)
 
     maze = []
+    generation = []
 
-    # fill center of the maze with all paths
     for i in range(mazeHeight):
         row = []
         for j in range(mazeWidth):
@@ -83,10 +75,8 @@ def recursiveDivisionInit(mazeWidth, mazeHeight):
                     row.append("P")
         maze.append(row)
 
-    # start run
     divide(0, 0, mazeWidth, mazeHeight)
 
-    # create a start and exit
     for i in range(0, mazeWidth):
         if maze[1][i] == "P":
             maze[0][i] = "P"
@@ -96,4 +86,4 @@ def recursiveDivisionInit(mazeWidth, mazeHeight):
             maze[mazeHeight - 1][i] = "P"
             break
 
-    return maze
+    return maze, generation

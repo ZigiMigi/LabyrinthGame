@@ -10,6 +10,7 @@ def primInit(mazeHeight, mazeWidth):
     # fill array with unwalked cells
     maze = []
     walls = []
+    generation = []
     for i in range(0, mazeHeight):
         row = []
         for j in range(0, mazeWidth):
@@ -20,6 +21,7 @@ def primInit(mazeHeight, mazeWidth):
     randStartH = random.randint(1, mazeHeight - 2)
     randStartW = random.randint(1, mazeWidth - 2)
     maze[randStartH][randStartW] = "P"
+    generation.append((randStartH, randStartW))
     walls.extend(([randStartH - 1, randStartW], [randStartH + 1, randStartW],
                   [randStartH, randStartW - 1], [randStartH, randStartW + 1]))
     maze[randStartH - 1][randStartW] = maze[randStartH + 1][randStartW] = \
@@ -33,6 +35,7 @@ def primInit(mazeHeight, mazeWidth):
             if maze[randWall[0]][randWall[1] - 1] == "?" and maze[randWall[0]][randWall[1] + 1] == "P":
                 if checkSurroundings(randWall, maze) < 2:
                     maze[randWall[0]][randWall[1]] = "P"
+                    generation.append((randWall[0], randWall[1]))
 
                     if randWall[0] != 0:
                         if maze[randWall[0] - 1][randWall[1]] != "P":
@@ -60,6 +63,7 @@ def primInit(mazeHeight, mazeWidth):
             if maze[randWall[0] - 1][randWall[1]] == "?" and maze[randWall[0] + 1][randWall[1]] == "P":
                 if checkSurroundings(randWall, maze) < 2:
                     maze[randWall[0]][randWall[1]] = "P"
+                    generation.append((randWall[0], randWall[1]))
 
                     if randWall[0] != 0:
                         if maze[randWall[0] - 1][randWall[1]] != "P":
@@ -87,6 +91,7 @@ def primInit(mazeHeight, mazeWidth):
             if maze[randWall[0] + 1][randWall[1]] == "?" and maze[randWall[0] - 1][randWall[1]] == "P":
                 if checkSurroundings(randWall, maze) < 2:
                     maze[randWall[0]][randWall[1]] = "P"
+                    generation.append((randWall[0], randWall[1]))
 
                     if randWall[0] != mazeHeight - 1:
                         if maze[randWall[0] + 1][randWall[1]] != "P":
@@ -114,6 +119,7 @@ def primInit(mazeHeight, mazeWidth):
             if maze[randWall[0]][randWall[1] + 1] == "?" and maze[randWall[0]][randWall[1] - 1] == "P":
                 if checkSurroundings(randWall, maze) < 2:
                     maze[randWall[0]][randWall[1]] = "P"
+                    generation.append((randWall[0], randWall[1]))
 
                     if randWall[1] != mazeWidth - 1:
                         if maze[randWall[0]][randWall[1] + 1] != "P":
@@ -149,12 +155,14 @@ def primInit(mazeHeight, mazeWidth):
     for i in range(0, mazeWidth):
         if maze[1][i] == "P":
             maze[0][i] = "P"
+            generation.append((0, i))
             break
     for i in range(mazeWidth - 1, 0, -1):
         if maze[mazeHeight - 2][i] == "P":
             maze[mazeHeight - 1][i] = "P"
+            generation.append((mazeHeight - 1, i))
             break
-    return maze
+    return maze, generation
 
 
 def checkSurroundings(randWall, maze):

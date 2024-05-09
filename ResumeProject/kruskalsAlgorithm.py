@@ -15,6 +15,7 @@ def kuskalInit(mazeHeight, mazeWidth):
     elements = []
     sets = []
     cnt = 1
+    generation = []
 
     # fill maze with all walls and mark every element
     for i in range(0, mazeHeight):
@@ -50,6 +51,7 @@ def kuskalInit(mazeHeight, mazeWidth):
                 # place path
                 for i in range(3):
                     maze[currentElement[0] + i][currentElement[1]] = "P"
+                    generation.append((currentElement[0] + i, currentElement[1]))
         elif currentElement[2] == -1:
             # horizontal
             if sets[currentElement[0]][currentElement[1] + 2] != sets[currentElement[0]][currentElement[1]]:
@@ -57,15 +59,18 @@ def kuskalInit(mazeHeight, mazeWidth):
                 # place path
                 for i in range(3):
                     maze[currentElement[0]][currentElement[1] + i] = "P"
+                    generation.append((currentElement[0], currentElement[1] + i))
 
     # create a start and exit
     for i in range(0, mazeWidth):
         if maze[1][i] == "P":
             maze[0][i] = "P"
+            generation.append((0, i))
             break
     for i in range(mazeWidth - 1, 0, -1):
         if maze[mazeHeight - 2][i] == "P":
             maze[mazeHeight - 1][i] = "P"
+            generation.append((mazeHeight - 1, i))
             break
-    return maze
+    return maze, generation
 
